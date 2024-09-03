@@ -51,6 +51,12 @@ check_error "Firefox"
 sudo apt install -y transmission
 check_error "Transmission"
 
+#Intalar gdebi / The `gdebi` is a useful tool for installing `.deb` packages and automatically resolves the necessary dependencies.
+
+sudo apt update
+sudo apt install gdebi-core
+check_error "gdebi"
+
 # Verificar se houve falhas
 if [ ${#failed_apps[@]} -eq 0 ]; then
     echo "Todos os aplicativos foram instalados com sucesso!"
