@@ -53,7 +53,6 @@ check_error "Transmission"
 
 #Intalar gdebi / The `gdebi` is a useful tool for installing `.deb` packages and automatically resolves the necessary dependencies.
 
-sudo apt update
 sudo apt install gdebi-core
 check_error "gdebi"
 
