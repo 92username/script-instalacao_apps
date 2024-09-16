@@ -56,6 +56,16 @@ check_error "Transmission"
 sudo apt install gdebi-core
 check_error "gdebi"
 
+# Instalação do Git
+sudo apt update
+sudo apt install -y git
+check_error "git"
+
+# Instalação do SSH
+sudo apt install -y openssh-client openssh-server
+check_error "SSH"
+
+
 # Verificar se houve falhas
 if [ ${#failed_apps[@]} -eq 0 ]; then
     echo "Todos os aplicativos foram instalados com sucesso!"
