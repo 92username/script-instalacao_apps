@@ -23,6 +23,8 @@ Installed Applications
 - Firefox
 - Transmission
 - Gdebi
+- Git
+- SSH
     
 
     
