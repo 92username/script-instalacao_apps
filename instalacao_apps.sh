@@ -1,77 +1,117 @@
 #!/bin/bash
-# Como usar:
-# Torne-o executavel:
+# How to use:
+# Make it executable:
 # $ chmod +x instalacao_apps.sh
-# Execute o script:
-# ./instalacao_apps.sh
-# No final voce recebera uma lista dos aplicativos que não foram instalados corretamente
+# Run the script:
+# $ ./instalacao_apps.sh
+# At the end, you will receive a list of applications that were not installed correctly
+# Make sure to run this script as a user with sudo permissions
 
-
-# Array para armazenar os aplicativos que falharam na instalação
+# Array to store applications that failed to install
 failed_apps=()
 
-# Função para verificar se o comando anterior foi bem-sucedido
+# Function to check if the previous command was successful
 check_error() {
-    if [ $? -ne 0 ]; then
-        echo "Erro na instalação de $1."
-        failed_apps+=("$1")
-    fi
+	if [ $? -ne 0 ]; then
+		echo "Error installing $1."
+		failed_apps+=("$1")
+	fi
 }
 
-# Atualizar o sistema
-sudo apt update && sudo apt upgrade -y
-check_error "atualização do sistema"
-
-# Instalar Discord
-sudo apt install -y discord
-check_error "Discord"
-
-# Instalar Telegram
-sudo apt install -y telegram-desktop
-check_error "Telegram"
-
-# Instalar Visual Studio Code
-sudo apt install -y wget gpg
-wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
-sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-sudo apt update
-sudo apt install -y code
-check_error "Visual Studio Code"
-
-# Instalar Chromium
-sudo apt install -y chromium-browser
-check_error "Chromium"
-
-# Instalar Firefox
-sudo apt install -y firefox
-check_error "Firefox"
-
-# Instalar Transmission
-sudo apt install -y transmission
-check_error "Transmission"
-
-#Intalar gdebi / The `gdebi` is a useful tool for installing `.deb` packages and automatically resolves the necessary dependencies.
-
-sudo apt install gdebi-core
-check_error "gdebi"
-
-# Instalação do Git
-sudo apt update
-sudo apt install -y git
-check_error "git"
-
-# Instalação do SSH
-sudo apt install -y openssh-client openssh-server
-check_error "SSH"
-
-
-# Verificar se houve falhas
-if [ ${#failed_apps[@]} -eq 0 ]; then
-    echo "Todos os aplicativos foram instalados com sucesso!"
-else
-    echo "Os seguintes aplicativos falharam na instalação:"
-    for app in "${failed_apps[@]}"; do
-        echo "- $app"
-    done
+# Check if the environment supports graphical interfaces
+if [ -z "$DISPLAY" ]; then
+	echo "Error: Graphical environment not detected. Make sure you are in a Linux desktop session."
+	exit 1
 fi
+
+# Install zenity if not installed
+if ! command -v zenity &> /dev/null; then
+	echo "Zenity not found, installing..."
+	sudo apt update && sudo apt install -y zenity
+	check_error "Zenity"
+fi
+
+# Dialog box to select applications
+echo "Opening zenity dialog box..."
+apps=$(zenity --list --checklist --title="Select Applications" --text="Choose the applications to install:" --column="Select" --column="Application" \
+	FALSE "Discord" \
+	FALSE "Telegram" \
+	FALSE "Visual Studio Code" \
+	FALSE "Chromium" \
+	FALSE "Firefox" \
+	FALSE "Transmission" \
+	FALSE "Gdebi" \
+	FALSE "Git" \
+	FALSE "SSH" \
+	--separator=":")
+
+# Check if the user canceled the selection
+if [ -z "$apps" ]; then
+	echo "No applications selected. Exiting..."
+	exit 1
+fi
+
+# Update the system
+sudo apt update && sudo apt upgrade -y
+check_error "system update"
+
+# Install selected applications
+IFS=":" read -r -a selected_apps <<< "$apps"
+
+for app in "${selected_apps[@]}"; do
+	echo "Installing $app..."
+	case $app in
+		"Discord")
+			sudo apt install -y discord
+			check_error "Discord"
+			;;
+		"Telegram")
+			sudo apt install -y telegram-desktop
+			check_error "Telegram"
+			;;
+		"Visual Studio Code")
+			sudo apt install -y wget gpg
+			wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+			sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
+			sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+			sudo apt update
+			sudo apt install -y code
+			check_error "Visual Studio Code"
+			;;
+		"Chromium")
+			sudo apt install -y chromium-browser
+			check_error "Chromium"
+			;;
+		"Firefox")
+			sudo apt install -y firefox
+			check_error "Firefox"
+			;;
+		"Transmission")
+			sudo apt install -y transmission
+			check_error "Transmission"
+			;;
+		"Gdebi")
+			sudo apt install -y gdebi-core
+			check_error "Gdebi"
+			;;
+		"Git")
+			sudo apt install -y git
+			check_error "Git"
+			;;
+		"SSH")
+			sudo apt install -y openssh-client openssh-server
+			check_error "SSH"
+			;;
+	esac
+done
+
+# Display applications that failed to install
+if [ ${#failed_apps[@]} -ne 0 ]; then
+	echo "The following applications failed to install:"
+	for app in "${failed_apps[@]}"; do
+		echo "- $app"
+	done
+else
+	echo "All applications were installed successfully."
+fi
+private _stream: Stream;
