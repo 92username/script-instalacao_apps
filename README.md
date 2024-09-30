@@ -14,7 +14,7 @@ This project was created to automate the installation of common software on Linu
 
 ### Future Features (Under Development)
 
-- [ ] Graphical interface for selecting applications to install (graphical dialog box).
+- [x] Graphical interface for selecting applications to install (graphical dialog box).
 - [ ] Support for different Linux distributions.
 - [ ] Code optimizations for greater flexibility and customization.
 
