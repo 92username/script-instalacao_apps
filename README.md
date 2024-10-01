@@ -37,7 +37,7 @@ To use this script, you need a Linux system with `bash` and **superuser** (root)
       ```
 3. Make the script executable:
       ```bash
-      sudo ./install_apps.sh
+      chmod +x install_apps.sh
       ```
 4. Run the script as a superuser:
       ```bash
