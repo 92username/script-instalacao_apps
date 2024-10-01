@@ -37,11 +37,11 @@ To use this script, you need a Linux system with `bash` and **superuser** (root)
       ```
 3. Make the script executable:
       ```bash
-      chmod +x install_apps.sh
+      chmod +x instalacao_apps.sh
       ```
 4. Run the script as a superuser:
       ```bash
-      sudo ./install_apps.sh
+      sudo ./instalacao_apps.sh
       ```
 5. The script will automatically install all the applications listed.
 
