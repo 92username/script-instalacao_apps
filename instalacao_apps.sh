@@ -43,6 +43,7 @@ apps=$(zenity --list --checklist --title="Select Applications" --text="Choose th
 	FALSE "Gdebi" \
 	FALSE "Git" \
 	FALSE "SSH" \
+	FALSE "Virtual Machine Manager" \
 	--separator=":")
 
 # Check if the user canceled the selection
@@ -101,6 +102,10 @@ for app in "${selected_apps[@]}"; do
 		"SSH")
 			sudo apt install -y openssh-client openssh-server
 			check_error "SSH"
+			;;
+		"Virtual Machine Manager")
+			sudo apt install -y virt-manager
+			check_error "Virtual Machine Manager"
 			;;
 	esac
 done
