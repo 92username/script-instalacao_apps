@@ -119,4 +119,3 @@ if [ ${#failed_apps[@]} -ne 0 ]; then
 else
 	echo "All applications were installed successfully."
 fi
-private _stream: Stream;
