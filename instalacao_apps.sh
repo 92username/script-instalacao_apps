@@ -17,6 +17,17 @@ check_error() {
 		failed_apps+=("$1")
 	fi
 }
+# Check if the environment supports graphical interfaces
+if [ -z "$DISPLAY" ]; then
+    echo "Error: Graphical environment not detected. Make sure you are in a Linux desktop session."
+    exit 1
+fi
+
+# Install dbus-x11 if not installed
+if ! command -v dbus-launch &> /dev/null; then
+    echo "dbus-x11 not found, installing..."
+    sudo apt-get update && sudo apt-get install -y dbus-x11
+fi
 
 # Check if the environment supports graphical interfaces
 if [ -z "$DISPLAY" ]; then
@@ -27,7 +38,7 @@ fi
 # Install zenity if not installed
 if ! command -v zenity &> /dev/null; then
 	echo "Zenity not found, installing..."
-	sudo apt update && sudo apt install -y zenity
+	sudo apt install -y zenity
 	check_error "Zenity"
 fi
 
