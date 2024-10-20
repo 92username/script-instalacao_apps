@@ -45,22 +45,23 @@ fi
 # Dialog box to select applications
 echo "Opening zenity dialog box..."
 apps=$(zenity --list --checklist --title="Select Applications" --text="Choose the applications to install:" --column="Select" --column="Application" \
-	FALSE "Discord" \
-	FALSE "Telegram" \
-	FALSE "Visual Studio Code" \
-	FALSE "Chromium" \
-	FALSE "Firefox" \
-	FALSE "Transmission" \
-	FALSE "Gdebi" \
-	FALSE "Git" \
-	FALSE "SSH" \
-	FALSE "Virtual Machine Manager" \
-	--separator=":")
+    FALSE "Discord" \
+    FALSE "Telegram (snap)" \
+    FALSE "Visual Studio Code" \
+    FALSE "Chromium" \
+    FALSE "Firefox" \
+    FALSE "Transmission" \
+    FALSE "Gdebi" \
+    FALSE "Git" \
+    FALSE "SSH" \
+    FALSE "Virtual Machine Manager" \
+    --separator=":" \
+	--width=450 --height=700)
 
 # Check if the user canceled the selection
 if [ -z "$apps" ]; then
-	echo "No applications selected. Exiting..."
-	exit 1
+    echo "No applications selected. Exiting..."
+    exit 1
 fi
 
 # Update the system
@@ -71,54 +72,59 @@ check_error "system update"
 IFS=":" read -r -a selected_apps <<< "$apps"
 
 for app in "${selected_apps[@]}"; do
-	echo "Installing $app..."
-	case $app in
-		"Discord")
-			sudo apt install -y discord
-			check_error "Discord"
-			;;
-		"Telegram")
-			sudo apt install -y telegram-desktop
-			check_error "Telegram"
-			;;
-		"Visual Studio Code")
-			sudo apt install -y wget gpg
-			wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-			sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
-			sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-			sudo apt update
-			sudo apt install -y code
-			check_error "Visual Studio Code"
-			;;
-		"Chromium")
-			sudo apt install -y chromium-browser
-			check_error "Chromium"
-			;;
-		"Firefox")
-			sudo apt install -y firefox
-			check_error "Firefox"
-			;;
-		"Transmission")
-			sudo apt install -y transmission
-			check_error "Transmission"
-			;;
-		"Gdebi")
-			sudo apt install -y gdebi-core
-			check_error "Gdebi"
-			;;
-		"Git")
-			sudo apt install -y git
-			check_error "Git"
-			;;
-		"SSH")
-			sudo apt install -y openssh-client openssh-server
-			check_error "SSH"
-			;;
-		"Virtual Machine Manager")
-			sudo apt install -y virt-manager
-			check_error "Virtual Machine Manager"
-			;;
-	esac
+    echo "Installing $app..."
+    case $app in
+        "Discord")
+            sudo apt install -y discord
+            check_error "Discord"
+            ;;
+        "Telegram")
+            if ! command -v snap &> /dev/null; then
+                echo "snap not found, installing..."
+                sudo apt install -y snapd
+                check_error "snap"
+            fi
+            sudo snap install telegram-desktop
+            check_error "Telegram"
+            ;;
+        "Visual Studio Code")
+            sudo apt install -y wget gpg
+            wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+            sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
+            sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+            sudo apt update
+            sudo apt install -y code
+            check_error "Visual Studio Code"
+            ;;
+        "Chromium")
+            sudo apt install -y chromium-browser
+            check_error "Chromium"
+            ;;
+        "Firefox")
+            sudo apt install -y firefox
+            check_error "Firefox"
+            ;;
+        "Transmission")
+            sudo apt install -y transmission
+            check_error "Transmission"
+            ;;
+        "Gdebi")
+            sudo apt install -y gdebi-core
+            check_error "Gdebi"
+            ;;
+        "Git")
+            sudo apt install -y git
+            check_error "Git"
+            ;;
+        "SSH")
+            sudo apt install -y openssh-client openssh-server
+            check_error "SSH"
+            ;;
+        "Virtual Machine Manager")
+            sudo apt install -y virt-manager
+            check_error "Virtual Machine Manager"
+            ;;
+    esac
 done
 
 # Display applications that failed to install
