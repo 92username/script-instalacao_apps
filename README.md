@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d82f9e0ba49a49a090d2b1c59efbaf9f)](https://app.codacy.com/gh/92username/script-instalacao_apps?utm_source=github.com&utm_medium=referral&utm_content=92username/script-instalacao_apps&utm_campaign=Badge_Grade)
 [![CI](https://github.com/92username/script-instalacao_apps/actions/workflows/blank.yml/badge.svg)](https://github.com/92username/script-instalacao_apps/actions/workflows/blank.yml)
 
 # App Installation Script
