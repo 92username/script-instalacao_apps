@@ -1,3 +1,5 @@
+[![CI](https://github.com/92username/script-instalacao_apps/actions/workflows/blank.yml/badge.svg)](https://github.com/92username/script-instalacao_apps/actions/workflows/blank.yml)
+
 # App Installation Script
 
 This is an **automated script** for installing essential applications on Linux systems, designed to streamline the initial setup of a machine. The goal is to offer a simple and modular solution that can be expanded over time, incorporating new features like a **graphical dialog interface** for easier use.
