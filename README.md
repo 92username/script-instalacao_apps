@@ -13,7 +13,7 @@ This project was created to automate the installation of common software on Linu
 - Automatic installation of various applications via terminal.
 - Quick and easy setup on Linux-based systems (e.g., Ubuntu, Mint).
 - Modularity: Add and remove applications directly in the script.
-
+![Screenshot do aplicativo](/screenshot_app.png)
 ### Future Features (Under Development)
 
 - [x] Graphical interface for selecting applications to install (graphical dialog box).
