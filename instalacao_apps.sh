@@ -12,11 +12,22 @@ failed_apps=()
 
 # Function to check if the previous command was successful
 check_error() {
-	if [ $? -ne 0 ]; then
-		echo "Error installing $1."
-		failed_apps+=("$1")
-	fi
+    if [ $? -ne 0 ]; then
+        echo "Error installing $1."
+        failed_apps+=("$1")
+    fi
 }
+
+# Function to check if an application is already installed
+is_installed() {
+    if command -v "$1" &> /dev/null; then
+        echo "$1 is already installed."
+        return 0
+    else
+        return 1
+    fi
+}
+
 # Check if the environment supports graphical interfaces
 if [ -z "$DISPLAY" ]; then
     echo "Error: Graphical environment not detected. Make sure you are in a Linux desktop session."
@@ -31,15 +42,15 @@ fi
 
 # Check if the environment supports graphical interfaces
 if [ -z "$DISPLAY" ]; then
-	echo "Error: Graphical environment not detected. Make sure you are in a Linux desktop session."
-	exit 1
+    echo "Error: Graphical environment not detected. Make sure you are in a Linux desktop session."
+    exit 1
 fi
 
 # Install zenity if not installed
 if ! command -v zenity &> /dev/null; then
-	echo "Zenity not found, installing..."
-	sudo apt install -y zenity
-	check_error "Zenity"
+    echo "Zenity not found, installing..."
+    sudo apt install -y zenity
+    check_error "Zenity"
 fi
 
 # Dialog box to select applications
@@ -56,7 +67,7 @@ apps=$(zenity --list --checklist --title="Select Applications" --text="Choose th
     FALSE "SSH" \
     FALSE "Virtual Machine Manager" \
     --separator=":" \
-	--width=450 --height=700)
+    --width=450 --height=700)
 
 # Check if the user canceled the selection
 if [ -z "$apps" ]; then
@@ -75,64 +86,84 @@ for app in "${selected_apps[@]}"; do
     echo "Installing $app..."
     case $app in
         "Discord")
-            sudo apt install -y discord
-            check_error "Discord"
+            if ! is_installed discord; then
+                sudo apt install -y discord
+                check_error "Discord"
+            fi
             ;;
         "Telegram")
-            if ! command -v snap &> /dev/null; then
-                echo "snap not found, installing..."
-                sudo apt install -y snapd
-                check_error "snap"
+            if ! is_installed telegram-desktop; then
+                if ! command -v snap &> /dev/null; then
+                    echo "snap not found, installing..."
+                    sudo apt install -y snapd
+                    check_error "snap"
+                fi
+                sudo snap install telegram-desktop
+                check_error "Telegram"
             fi
-            sudo snap install telegram-desktop
-            check_error "Telegram"
             ;;
         "Visual Studio Code")
-            sudo apt install -y wget gpg
-            wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-            sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
-            sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-            sudo apt update
-            sudo apt install -y code
-            check_error "Visual Studio Code"
+            if ! is_installed code; then
+                sudo apt install -y wget gpg
+                wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+                sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
+                sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+                sudo apt update
+                sudo apt install -y code
+                check_error "Visual Studio Code"
+            fi
             ;;
         "Chromium")
-            sudo apt install -y chromium-browser
-            check_error "Chromium"
+            if ! is_installed chromium-browser; then
+                sudo apt install -y chromium-browser
+                check_error "Chromium"
+            fi
             ;;
         "Firefox")
-            sudo apt install -y firefox
-            check_error "Firefox"
+            if ! is_installed firefox; then
+                sudo apt install -y firefox
+                check_error "Firefox"
+            fi
             ;;
         "Transmission")
-            sudo apt install -y transmission
-            check_error "Transmission"
+            if ! is_installed transmission; then
+                sudo apt install -y transmission
+                check_error "Transmission"
+            fi
             ;;
         "Gdebi")
-            sudo apt install -y gdebi-core
-            check_error "Gdebi"
+            if ! is_installed gdebi; then
+                sudo apt install -y gdebi-core
+                check_error "Gdebi"
+            fi
             ;;
         "Git")
-            sudo apt install -y git
-            check_error "Git"
+            if ! is_installed git; then
+                sudo apt install -y git
+                check_error "Git"
+            fi
             ;;
         "SSH")
-            sudo apt install -y openssh-client openssh-server
-            check_error "SSH"
+            if ! is_installed ssh; then
+                sudo apt install -y openssh-client openssh-server
+                check_error "SSH"
+            fi
             ;;
         "Virtual Machine Manager")
-            sudo apt install -y virt-manager
-            check_error "Virtual Machine Manager"
+            if ! is_installed virt-manager; then
+                sudo apt install -y virt-manager
+                check_error "Virtual Machine Manager"
+            fi
             ;;
     esac
 done
 
 # Display applications that failed to install
 if [ ${#failed_apps[@]} -ne 0 ]; then
-	echo "The following applications failed to install:"
-	for app in "${failed_apps[@]}"; do
-		echo "- $app"
-	done
+    echo "The following applications failed to install:"
+    for app in "${failed_apps[@]}"; do
+        echo "- $app"
+    done
 else
-	echo "All applications were installed successfully."
+    echo "All applications were installed successfully."
 fi
