@@ -1,5 +1,6 @@
 [![CI](https://github.com/92username/script-instalacao_apps/actions/workflows/blank.yml/badge.svg)](https://github.com/92username/script-instalacao_apps/actions/workflows/blank.yml)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/1f8de1acb23d4669a372247229de2036)](https://app.codacy.com/gh/92username/script-instalacao_apps/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![CodeScan](https://github.com/92username/script-instalacao_apps/actions/workflows/codescan.yml/badge.svg)](https://github.com/92username/script-instalacao_apps/actions/workflows/codescan.yml)
 # App Installation Script
 
 This is an **automated script** for installing essential applications on Linux systems, designed to streamline the initial setup of a machine. The goal is to offer a simple and modular solution that can be expanded over time, incorporating new features like a **graphical dialog interface** for easier use.
