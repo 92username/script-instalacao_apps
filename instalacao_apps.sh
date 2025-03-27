@@ -61,6 +61,8 @@ apps=$(zenity --list --checklist --title="Select Applications" --text="Choose th
     FALSE "Transmission" \
     FALSE "Virtual Machine Manager" \
     FALSE "Visual Studio Code" \
+    FALSE "VLC - Media Player" \
+
     --separator=":" \
     --width=450 --height=700)
 
@@ -161,6 +163,15 @@ for app in "${selected_apps[@]}"; do
                 sudo apt install -y virt-manager
                 check_error "Virtual Machine Manager"
             fi
+            ;;
+        "VLC - Media Player")
+            if ! is_installed vlc; then
+                sudo apt install -y vlc
+                check_error "VLC - Media Player"
+            fi
+            ;;
+        *)
+            echo "Error: $app is not a valid application."
             ;;
     esac
 done
