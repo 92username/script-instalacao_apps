@@ -54,6 +54,7 @@ apps=$(zenity --list --checklist --title="Select Applications" --text="Choose th
     FALSE "Discord (snap)" \
     FALSE "Firefox" \
     FALSE "Gdebi" \
+    FALSE "GIMP" \
     FALSE "Git" \
     FALSE "SSH" \
     FALSE "Telegram (snap)" \
@@ -93,7 +94,13 @@ for app in "${selected_apps[@]}"; do
                 sudo snap install discord
                 check_error "Discord"
             fi
-                
+            ;;
+        "GIMP")
+            if ! is_installed gimp; then
+            echo "Installing GIMP..."
+            sudo apt install -y gimp
+            check_error "GIMP"
+            fi            
             ;;
         "Telegram")
             if ! is_installed telegram-desktop; then
