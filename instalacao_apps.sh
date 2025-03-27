@@ -126,7 +126,7 @@ for app in "${selected_apps[@]}"; do
             fi
             ;;
         "Transmission")
-            if ! is_installed transmission; then
+            if ! is_installed transmission-gtk; then
                 sudo apt install -y transmission
                 check_error "Transmission"
             fi
