@@ -189,6 +189,11 @@ for app in "${selected_apps[@]}"; do
     esac
 done
 
+# Clean up unused packages
+echo "Removing unused packages..."
+sudo apt autoremove -y
+echo "System cleanup completed."
+
 # Calculate elapsed time
 end_time=$(date +%s)
 total_seconds=$((end_time - start_time))
