@@ -7,6 +7,10 @@
 # At the end, you will receive a list of applications that were not installed correctly
 # Make sure to run this script as a user with sudo permissions
 
+# Record the start time
+start_time=$(date +%s)
+echo "Script started at: $(date '+%Y-%m-%d %H:%M:%S')"
+
 # Arrays to store installation outcomes
 failed_apps=()
 successful_apps=()
@@ -185,6 +189,12 @@ for app in "${selected_apps[@]}"; do
     esac
 done
 
+# Calculate elapsed time
+end_time=$(date +%s)
+total_seconds=$((end_time - start_time))
+minutes=$((total_seconds / 60))
+seconds=$((total_seconds % 60))
+
 # Display installation summary
 echo ""
 echo "=================================================="
@@ -216,7 +226,11 @@ if [ ${#failed_apps[@]} -ne 0 ]; then
     echo ""
 fi
 
+# Display time elapsed information
+echo "⏱️ Total elapsed time: $minutes minutes and $seconds seconds"
+echo ""
+
 # Final status message
 echo "=================================================="
-echo "Installation process completed."
+echo "Installation process completed at: $(date '+%Y-%m-%d %H:%M:%S')"
 echo "=================================================="
