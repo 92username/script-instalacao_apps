@@ -28,7 +28,7 @@ is_installed() {
     fi
 }
 
-# Check if the environment supports graphical interfaces
+# Check if the environment supports graphical interfa$DISPLAYces
 if [ -z "$DISPLAY" ]; then
     echo "Error: Graphical environment not detected. Make sure you are in a Linux desktop session."
     exit 1
@@ -38,12 +38,6 @@ fi
 if ! command -v dbus-launch &> /dev/null; then
     echo "dbus-x11 not found, installing..."
     sudo apt-get update && sudo apt-get install -y dbus-x11
-fi
-
-# Check if the environment supports graphical interfaces
-if [ -z "$DISPLAY" ]; then
-    echo "Error: Graphical environment not detected. Make sure you are in a Linux desktop session."
-    exit 1
 fi
 
 # Install zenity if not installed
@@ -56,16 +50,15 @@ fi
 # Dialog box to select applications
 echo "Opening zenity dialog box..."
 apps=$(zenity --list --checklist --title="Select Applications" --text="Choose the applications to install:" --column="Select" --column="Application" \
-    FALSE "Discord" \
-    FALSE "Telegram (snap)" \
-    FALSE "Visual Studio Code" \
-    FALSE "Chromium" \
+    FALSE "Discord (snap)" \
     FALSE "Firefox" \
-    FALSE "Transmission" \
     FALSE "Gdebi" \
     FALSE "Git" \
     FALSE "SSH" \
+    FALSE "Telegram (snap)" \
+    FALSE "Transmission" \
     FALSE "Virtual Machine Manager" \
+    FALSE "Visual Studio Code" \
     --separator=":" \
     --width=450 --height=700)
 
@@ -87,17 +80,23 @@ for app in "${selected_apps[@]}"; do
     case $app in
         "Discord")
             if ! is_installed discord; then
-                sudo apt install -y discord
-                check_error "Discord"
-            fi
-            ;;
-        "Telegram")
-            if ! is_installed telegram-desktop; then
+                # Check if snap is installed, if not install it
                 if ! command -v snap &> /dev/null; then
                     echo "snap not found, installing..."
                     sudo apt install -y snapd
                     check_error "snap"
+                    # Ensure snap is fully set up
+                    sudo systemctl enable --now snapd.socket
                 fi
+                echo "Installing Discord via snap..."
+                sudo snap install discord
+                check_error "Discord"
+            fi
+                
+            ;;
+        "Telegram")
+            if ! is_installed telegram-desktop; then
+                echo "Installing Telegram via snap..."
                 sudo snap install telegram-desktop
                 check_error "Telegram"
             fi
