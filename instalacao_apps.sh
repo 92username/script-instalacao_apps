@@ -50,6 +50,7 @@ fi
 # Dialog box to select applications
 echo "Opening zenity dialog box..."
 apps=$(zenity --list --checklist --title="Select Applications" --text="Choose the applications to install:" --column="Select" --column="Application" \
+    FALSE "Chromium" \
     FALSE "Discord (snap)" \
     FALSE "Firefox" \
     FALSE "Gdebi" \
