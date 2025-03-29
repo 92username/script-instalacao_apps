@@ -59,6 +59,7 @@ If you want to add or remove applications from the list, simply edit the install
    ```bash
       sudo apt install application-name
    ```
+
 ## Contributions
 
 Contributions are welcome! If you have suggestions, find a bug, or want to work on a new feature, follow the steps below:
