@@ -82,12 +82,10 @@ if [ -z "$apps" ]; then
     exit 1
 fi
 
-# Update the system
-sudo apt update && sudo apt upgrade -y
-if [ $? -ne 0 ]; then
+if ! (sudo apt update && sudo apt upgrade -y); then
     echo "Warning: System update encountered issues."
 else
-    echo "System updated successfully."
+    echo "Update successful."
 fi
 
 # Install selected applications
