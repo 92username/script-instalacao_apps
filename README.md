@@ -14,7 +14,9 @@ This project was created to automate the installation of common software on Linu
 - Automatic installation of various applications via terminal.
 - Quick and easy setup on Linux-based systems (e.g., Ubuntu, Mint).
 - Modularity: Add and remove applications directly in the script.
+
 ![Screenshot do aplicativo](/screenshot_app.png)
+
 ### Future Features (Under Development)
 
 - [x] Graphical interface for selecting applications to install (graphical dialog box).
@@ -49,9 +51,11 @@ To use this script, you need a Linux system with `bash` and **superuser** (root)
 5. The script will automatically install all the applications listed.
 
 ### Customization
+
 If you want to add or remove applications from the list, simply edit the install_apps.sh file and modify the package list inte appropriate section.
 
 ### Example Code for adding a new application
+
    ```bash
       sudo apt install application-name
    ```
