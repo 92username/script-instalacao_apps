@@ -97,6 +97,7 @@ for app in "${selected_apps[@]}"; do
                 sudo dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin                
                 sudo systemctl enable --now docker
                 sudo usermod -aG docker "$USER"
+                sudo docker run hello-world
                 echo "⚠️  To use Docker without sudo, please log out and log in again so that group changes take effect."
                 check_error "Docker"
             fi
