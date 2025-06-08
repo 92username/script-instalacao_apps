@@ -92,9 +92,9 @@ for app in "${selected_apps[@]}"; do
             ;;
         "Docker")
             if ! is_installed docker "Docker"; then
-                sudo dnf install -y dnf-plugins-core
-                sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
-                sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+                sudo dnf -y install dnf-plugins-core
+                sudo dnf-3 config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+                sudo dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin                
                 sudo systemctl enable --now docker
                 sudo usermod -aG docker "$USER"
                 echo "⚠️  To use Docker without sudo, please log out and log in again so that group changes take effect."
