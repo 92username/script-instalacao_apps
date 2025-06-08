@@ -12,22 +12,23 @@ This project was created to automate the installation of common software on Linu
 ### Current Features
 
 - Automatic installation of various applications via terminal.
-- Quick and easy setup on Linux-based systems (e.g., Ubuntu, Mint).
+- Quick and easy setup on Linux-based systems (e.g., Ubuntu, Mint, Fedora).
 - Modularity: Add and remove applications directly in the script.
+- **Support for multiple Linux distributions** (Ubuntu/Mint and Fedora).
 
 ![Screenshot do aplicativo](/screenshot_app.png)
 
 ### Future Features (Under Development)
 
 - [x] Graphical interface for selecting applications to install (graphical dialog box).
-- [ ] Support for different Linux distributions.
+- [ ] Support for more Linux distributions.
 - [x] Code optimizations for greater flexibility and customization.
 
 ## How to Use
 
 ### Prerequisites
 
-To use this script, you need a Linux system with `bash` and **superuser** (root) privileges.
+To use these scripts, you need a Linux system with `bash` and **superuser** (root) privileges.
 
 ### Installation Instructions
 
@@ -37,27 +38,41 @@ To use this script, you need a Linux system with `bash` and **superuser** (root)
    git clone https://github.com/92username/script-instalacao_apps.git
    ```
 2. Navigate to the project directory:
-      ```bash
-      cd script-instalacao_apps
-      ```
-3. Make the script executable:
-      ```bash
-      chmod +x instalacao_apps.sh
-      ```
-4. Run the script as a superuser:
-      ```bash
-      sudo ./instalacao_apps.sh
-      ```
-5. The script will automatically install all the applications listed.
+   ```bash
+   cd script-instalacao_apps
+   ```
+3. Make the desired script executable:
+   - For Ubuntu/Mint:
+     ```bash
+     chmod +x install_apps_ubuntu.sh
+     ```
+   - For Fedora:
+     ```bash
+     chmod +x install_apps_fedora.sh
+     ```
+4. Run the appropriate script as a superuser:
+   - For Ubuntu/Mint:
+     ```bash
+     sudo ./install_apps_ubuntu.sh
+     ```
+   - For Fedora:
+     ```bash
+     sudo ./install_apps_fedora.sh
+     ```
+5. The script will automatically install all the applications listed for your distribution.
 
 ### Customization
 
-If you want to add or remove applications from the list, simply edit the install_apps.sh file and modify the package list inte appropriate section.
+If you want to add or remove applications from the list, simply edit the corresponding script file (`install_apps_ubuntu.sh` or `install_apps_fedora.sh`) and modify the package list in the appropriate section.
 
 ### Example Code for adding a new application
 
    ```bash
       sudo apt install application-name
+   ```
+   or, for Fedora:
+   ```bash
+      sudo dnf install application-name
    ```
 
 ## Contributions
@@ -73,11 +88,3 @@ Contributions are welcome! If you have suggestions, find a bug, or want to work 
 ## License
 
 This project is licensed under the GNU License - see the [LICENSE](LICENSE) file for details.
-
-## Contact
-
-If you have any questions or suggestions, feel free to open an **issue** or get in touch.
-
----
-
-**Let's build together!** Feel free to contribute with new features, report issues, and share your ideas!
