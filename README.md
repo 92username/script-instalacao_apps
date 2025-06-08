@@ -1,6 +1,8 @@
 [![CI](https://github.com/92username/script-instalacao_apps/actions/workflows/blank.yml/badge.svg)](https://github.com/92username/script-instalacao_apps/actions/workflows/blank.yml)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/1f8de1acb23d4669a372247229de2036)](https://app.codacy.com/gh/92username/script-instalacao_apps/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
+![Debian](https://img.shields.io/badge/Debian-D70A53?style=for-the-badge&logo=debian&logoColor=white)
+![Fedora](https://img.shields.io/badge/Fedora-294172?style=for-the-badge&logo=fedora&logoColor=white)
 # App Installation Script
 
 This is an **automated script** for installing essential applications on Linux systems, designed to streamline the initial setup of a machine. The goal is to offer a simple and modular solution that can be expanded over time, incorporating new features like a **graphical dialog interface** for easier use.
@@ -18,11 +20,10 @@ This project was created to automate the installation of common software on Linu
 
 ![Screenshot do aplicativo](/screenshot_app.png)
 
-### Future Features (Under Development)
+### Features
 
 - [x] Graphical interface for selecting applications to install (graphical dialog box).
-- [ ] Support for more Linux distributions.
-- [x] Code optimizations for greater flexibility and customization.
+- [x] Support for more Linux distributions.
 
 ## How to Use
 
