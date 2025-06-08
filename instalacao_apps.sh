@@ -95,6 +95,12 @@ IFS=":" read -r -a selected_apps <<< "$apps"
 for app in "${selected_apps[@]}"; do
     echo "Installing $app..."
     case $app in
+        "Chromium")
+            if ! is_installed chromium-browser "Chromium"; then
+                sudo apt install -y chromium-browser
+                check_error "Chromium"
+            fi
+            ;;
         "Discord (snap)")
             if ! is_installed discord "Discord"; then
                 # Check if snap is installed, if not install it
@@ -107,79 +113,6 @@ for app in "${selected_apps[@]}"; do
                 echo "Installing Discord via snap..."
                 sudo snap install discord
                 check_error "Discord"
-            fi
-            ;;
-        "GIMP")
-            if ! is_installed gimp "GIMP"; then
-                echo "Installing GIMP..."
-                sudo apt install -y gimp
-                check_error "GIMP"
-            fi            
-            ;;
-        "Telegram (snap)")
-            if ! is_installed telegram-desktop "Telegram"; then
-                echo "Installing Telegram via snap..."
-                sudo snap install telegram-desktop
-                check_error "Telegram"
-            fi
-            ;;
-        "Visual Studio Code")
-            if ! is_installed code "Visual Studio Code"; then
-                sudo apt install -y wget gpg
-                wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-                sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
-                sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-                sudo apt update
-                sudo apt install -y code
-                check_error "Visual Studio Code"
-            fi
-            ;;
-        "Chromium")
-            if ! is_installed chromium-browser "Chromium"; then
-                sudo apt install -y chromium-browser
-                check_error "Chromium"
-            fi
-            ;;
-        "Firefox")
-            if ! is_installed firefox "Firefox"; then
-                sudo apt install -y firefox
-                check_error "Firefox"
-            fi
-            ;;
-        "Transmission")
-            if ! is_installed transmission-gtk "Transmission"; then
-                sudo apt install -y transmission
-                check_error "Transmission"
-            fi
-            ;;
-        "Gdebi")
-            if ! is_installed gdebi "Gdebi"; then
-                sudo apt install -y gdebi-core
-                check_error "Gdebi"
-            fi
-            ;;
-        "Git")
-            if ! is_installed git "Git"; then
-                sudo apt install -y git
-                check_error "Git"
-            fi
-            ;;
-        "SSH")
-            if ! is_installed ssh "SSH"; then
-                sudo apt install -y openssh-client openssh-server
-                check_error "SSH"
-            fi
-            ;;
-        "Virtual Machine Manager")
-            if ! is_installed virt-manager "Virtual Machine Manager"; then
-                sudo apt install -y virt-manager
-                check_error "Virtual Machine Manager"
-            fi
-            ;;
-        "VLC - Media Player")
-            if ! is_installed vlc "VLC - Media Player"; then
-                sudo apt install -y vlc
-                check_error "VLC - Media Player"
             fi
             ;;
         "Docker")
@@ -202,6 +135,73 @@ for app in "${selected_apps[@]}"; do
                 sudo usermod -aG docker "$USER"
                 echo "⚠️  To use Docker without sudo, please log out and log in again so that group changes take effect."
                 check_error "Docker"
+            fi
+            ;;
+        "Firefox")
+            if ! is_installed firefox "Firefox"; then
+                sudo apt install -y firefox
+                check_error "Firefox"
+            fi
+            ;;
+        "Gdebi")
+            if ! is_installed gdebi "Gdebi"; then
+                sudo apt install -y gdebi-core
+                check_error "Gdebi"
+            fi
+            ;;
+        "GIMP")
+            if ! is_installed gimp "GIMP"; then
+                echo "Installing GIMP..."
+                sudo apt install -y gimp
+                check_error "GIMP"
+            fi            
+            ;;
+        "Git")
+            if ! is_installed git "Git"; then
+                sudo apt install -y git
+                check_error "Git"
+            fi
+            ;;
+        "SSH")
+            if ! is_installed ssh "SSH"; then
+                sudo apt install -y openssh-client openssh-server
+                check_error "SSH"
+            fi
+            ;;
+        "Telegram (snap)")
+            if ! is_installed telegram-desktop "Telegram"; then
+                echo "Installing Telegram via snap..."
+                sudo snap install telegram-desktop
+                check_error "Telegram"
+            fi
+            ;;
+        "Transmission")
+            if ! is_installed transmission-gtk "Transmission"; then
+                sudo apt install -y transmission
+                check_error "Transmission"
+            fi
+            ;;
+        "Virtual Machine Manager")
+            if ! is_installed virt-manager "Virtual Machine Manager"; then
+                sudo apt install -y virt-manager
+                check_error "Virtual Machine Manager"
+            fi
+            ;;
+        "Visual Studio Code")
+            if ! is_installed code "Visual Studio Code"; then
+                sudo apt install -y wget gpg
+                wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+                sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
+                sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+                sudo apt update
+                sudo apt install -y code
+                check_error "Visual Studio Code"
+            fi
+            ;;
+        "VLC - Media Player")
+            if ! is_installed vlc "VLC - Media Player"; then
+                sudo apt install -y vlc
+                check_error "VLC - Media Player"
             fi
             ;;
         *)
