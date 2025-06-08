@@ -63,6 +63,7 @@ echo "Opening zenity dialog box..."
 apps=$(zenity --list --checklist --title="Select Applications" --text="Choose the applications to install:" --column="Select" --column="Application" \
     FALSE "Chromium" \
     FALSE "Discord (snap)" \
+    FALSE "Docker" \
     FALSE "Firefox" \
     FALSE "Gdebi" \
     FALSE "GIMP" \
@@ -179,6 +180,28 @@ for app in "${selected_apps[@]}"; do
             if ! is_installed vlc "VLC - Media Player"; then
                 sudo apt install -y vlc
                 check_error "VLC - Media Player"
+            fi
+            ;;
+        "Docker")
+            if ! is_installed docker "Docker"; then
+                echo "Removing old versions of Docker, if any..."
+                sudo apt remove -y docker docker-engine docker.io containerd runc
+                echo "Installing dependencies for Docker..."
+                sudo apt install -y apt-transport-https ca-certificates curl gnupg lsb-release
+                echo "Adding Docker's official GPG key..."
+                curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+                echo "Adding Docker repository..."
+                echo \ \
+                  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+                  $(lsb_release -cs) stable" | \
+                  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+                sudo apt update
+                echo "Installing Docker packages..."
+                sudo apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+                sudo systemctl enable --now docker
+                sudo usermod -aG docker "$USER"
+                echo "⚠️  To use Docker without sudo, please log out and log in again so that group changes take effect."
+                check_error "Docker"
             fi
             ;;
         *)

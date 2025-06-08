@@ -47,6 +47,7 @@ fi
 apps=$(zenity --list --checklist --title="Select Applications" --text="Choose the applications to install:" --column="Select" --column="Application" \
     FALSE "Chromium" \
     FALSE "Discord (Flatpak)" \
+    FALSE "Docker" \
     FALSE "Firefox" \
     FALSE "GIMP" \
     FALSE "Git" \
@@ -77,37 +78,27 @@ IFS=":" read -r -a selected_apps <<< "$apps"
 for app in "${selected_apps[@]}"; do
     echo "Installing $app..."
     case $app in
+        "Chromium")
+            if ! is_installed chromium "Chromium"; then
+                sudo dnf install -y chromium
+                check_error "Chromium"
+            fi
+            ;;
         "Discord (Flatpak)")
             if ! is_installed discord "Discord"; then
                 flatpak install -y flathub com.discordapp.Discord
                 check_error "Discord"
             fi
             ;;
-        "GIMP")
-            if ! is_installed gimp "GIMP"; then
-                sudo dnf install -y gimp
-                check_error "GIMP"
-            fi
-            ;;
-        "Telegram (Flatpak)")
-            if ! is_installed telegram-desktop "Telegram"; then
-                flatpak install -y flathub org.telegram.desktop
-                check_error "Telegram"
-            fi
-            ;;
-        "Visual Studio Code")
-            if ! is_installed code "Visual Studio Code"; then
-                sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
-                sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
-                sudo dnf check-update
-                sudo dnf install -y code
-                check_error "Visual Studio Code"
-            fi
-            ;;
-        "Chromium")
-            if ! is_installed chromium "Chromium"; then
-                sudo dnf install -y chromium
-                check_error "Chromium"
+        "Docker")
+            if ! is_installed docker "Docker"; then
+                sudo dnf install -y dnf-plugins-core
+                sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+                sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+                sudo systemctl enable --now docker
+                sudo usermod -aG docker "$USER"
+                echo "⚠️  To use Docker without sudo, please log out and log in again so that group changes take effect."
+                check_error "Docker"
             fi
             ;;
         "Firefox")
@@ -116,10 +107,10 @@ for app in "${selected_apps[@]}"; do
                 check_error "Firefox"
             fi
             ;;
-        "Transmission")
-            if ! is_installed transmission-gtk "Transmission"; then
-                sudo dnf install -y transmission
-                check_error "Transmission"
+        "GIMP")
+            if ! is_installed gimp "GIMP"; then
+                sudo dnf install -y gimp
+                check_error "GIMP"
             fi
             ;;
         "Git")
@@ -135,10 +126,31 @@ for app in "${selected_apps[@]}"; do
                 check_error "SSH Server"
             fi
             ;;
+        "Telegram (Flatpak)")
+            if ! is_installed telegram-desktop "Telegram"; then
+                flatpak install -y flathub org.telegram.desktop
+                check_error "Telegram"
+            fi
+            ;;
+        "Transmission")
+            if ! is_installed transmission-gtk "Transmission"; then
+                sudo dnf install -y transmission
+                check_error "Transmission"
+            fi
+            ;;
         "Virtual Machine Manager")
             if ! is_installed virt-manager "Virtual Machine Manager"; then
                 sudo dnf install -y virt-manager
                 check_error "Virtual Machine Manager"
+            fi
+            ;;
+        "Visual Studio Code")
+            if ! is_installed code "Visual Studio Code"; then
+                sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+                sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
+                sudo dnf check-update
+                sudo dnf install -y code
+                check_error "Visual Studio Code"
             fi
             ;;
         "VLC - Media Player")
