@@ -45,6 +45,7 @@ fi
 
 # Dialog box
 apps=$(zenity --list --checklist --title="Select Applications" --text="Choose the applications to install:" --column="Select" --column="Application" \
+    FALSE "Balena Etcher" \
     FALSE "Chromium" \
     FALSE "Discord (Flatpak)" \
     FALSE "Docker" \
@@ -78,6 +79,13 @@ IFS=":" read -r -a selected_apps <<< "$apps"
 for app in "${selected_apps[@]}"; do
     echo "Installing $app..."
     case $app in
+        "Balena Etcher")
+            if ! is_installed balena-etcher-electron "Balena Etcher"; then
+                echo "Installing Balena Etcher via Flatpak..."
+                flatpak install -y flathub com.balena.Etcher
+                check_error "Balena Etcher"
+            fi
+            ;;
         "Chromium")
             if ! is_installed chromium "Chromium"; then
                 sudo dnf install -y chromium
