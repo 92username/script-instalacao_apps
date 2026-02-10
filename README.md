@@ -45,7 +45,7 @@ To use these scripts, you need a Linux system with `bash` and **superuser** (roo
 3. Make the desired script executable:
    - For Ubuntu/Mint:
      ```bash
-     chmod +x install_apps_ubuntu.sh
+     chmod +x instalacao_apps.sh
      ```
    - For Fedora:
      ```bash
@@ -54,7 +54,7 @@ To use these scripts, you need a Linux system with `bash` and **superuser** (roo
 4. Run the appropriate script as a superuser:
    - For Ubuntu/Mint:
      ```bash
-     sudo ./install_apps_ubuntu.sh
+     sudo ./instalacao_apps.sh
      ```
    - For Fedora:
      ```bash
