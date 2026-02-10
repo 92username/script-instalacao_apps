@@ -46,6 +46,7 @@ fi
 # Dialog box
 apps=$(zenity --list --checklist --title="Select Applications" --text="Choose the applications to install:" --column="Select" --column="Application" \
     FALSE "Chromium" \
+    FALSE "curl" \
     FALSE "Discord (Flatpak)" \
     FALSE "Docker" \
     FALSE "Firefox" \
@@ -82,6 +83,12 @@ for app in "${selected_apps[@]}"; do
             if ! is_installed chromium "Chromium"; then
                 sudo dnf install -y chromium
                 check_error "Chromium"
+            fi
+            ;;
+        "curl")
+            if ! is_installed curl "curl"; then
+                sudo dnf install -y curl
+                check_error "curl"
             fi
             ;;
         "Discord (Flatpak)")

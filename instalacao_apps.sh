@@ -62,6 +62,7 @@ fi
 echo "Opening zenity dialog box..."
 apps=$(zenity --list --checklist --title="Select Applications" --text="Choose the applications to install:" --column="Select" --column="Application" \
     FALSE "Chromium" \
+    FALSE "curl" \
     FALSE "Discord (snap)" \
     FALSE "Docker" \
     FALSE "Firefox" \
@@ -99,6 +100,12 @@ for app in "${selected_apps[@]}"; do
             if ! is_installed chromium-browser "Chromium"; then
                 sudo apt install -y chromium-browser
                 check_error "Chromium"
+            fi
+            ;;
+        "curl")
+            if ! is_installed curl "curl"; then
+                sudo apt install -y curl
+                check_error "curl"
             fi
             ;;
         "Discord (snap)")
