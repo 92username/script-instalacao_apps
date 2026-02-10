@@ -61,6 +61,7 @@ fi
 # Dialog box to select applications
 echo "Opening zenity dialog box..."
 apps=$(zenity --list --checklist --title="Select Applications" --text="Choose the applications to install:" --column="Select" --column="Application" \
+    FALSE "Balena Etcher" \
     FALSE "Chromium" \
     FALSE "curl" \
     FALSE "Discord (snap)" \
@@ -96,6 +97,20 @@ IFS=":" read -r -a selected_apps <<< "$apps"
 for app in "${selected_apps[@]}"; do
     echo "Installing $app..."
     case $app in
+        "Balena Etcher")
+            if ! is_installed balena-etcher-electron "Balena Etcher"; then
+                echo "Installing Balena Etcher via snap..."
+                # Check if snap is installed, if not install it
+                if ! command -v snap &> /dev/null; then
+                    echo "snap not found, installing..."
+                    sudo apt install -y snapd
+                    sudo systemctl enable --now snapd.socket
+                    sleep 2
+                fi
+                sudo snap install balena-etcher-electron --classic
+                check_error "Balena Etcher"
+            fi
+            ;;
         "Chromium")
             if ! is_installed chromium-browser "Chromium"; then
                 sudo apt install -y chromium-browser
