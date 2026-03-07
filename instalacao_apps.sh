@@ -28,6 +28,16 @@ check_error() {
     fi
 }
 
+# Function to ensure snap is available
+ensure_snap_available() {
+    if ! command -v snap &> /dev/null; then
+        echo "snap not found, installing..."
+        sudo apt install -y snapd
+        sudo systemctl enable --now snapd.socket
+        sleep 2
+    fi
+}
+
 # Function to check if an application is already installed
 is_installed() {
     if command -v "$1" &> /dev/null; then
@@ -98,22 +108,18 @@ for app in "${selected_apps[@]}"; do
     echo "Installing $app..."
     case $app in
         "Balena Etcher")
-            if ! is_installed balena-etcher-electron "Balena Etcher"; then
+            if ! is_installed balena-etcher "Balena Etcher"; then
                 echo "Installing Balena Etcher via snap..."
-                # Check if snap is installed, if not install it
-                if ! command -v snap &> /dev/null; then
-                    echo "snap not found, installing..."
-                    sudo apt install -y snapd
-                    sudo systemctl enable --now snapd.socket
-                    sleep 2
-                fi
-                sudo snap install balena-etcher-electron --classic
+                ensure_snap_available
+                sudo snap install balena-etcher
                 check_error "Balena Etcher"
             fi
             ;;
         "Chromium")
-            if ! is_installed chromium-browser "Chromium"; then
-                sudo apt install -y chromium-browser
+            if ! is_installed chromium "Chromium"; then
+                echo "Installing Chromium via snap..."
+                ensure_snap_available
+                sudo snap install chromium
                 check_error "Chromium"
             fi
             ;;
@@ -125,14 +131,8 @@ for app in "${selected_apps[@]}"; do
             ;;
         "Discord (snap)")
             if ! is_installed discord "Discord"; then
-                # Check if snap is installed, if not install it
-                if ! command -v snap &> /dev/null; then
-                    echo "snap not found, installing..."
-                    sudo apt install -y snapd
-                    sudo systemctl enable --now snapd.socket
-                    sleep 2
-                fi
                 echo "Installing Discord via snap..."
+                ensure_snap_available
                 sudo snap install discord
                 check_error "Discord"
             fi
@@ -193,6 +193,7 @@ for app in "${selected_apps[@]}"; do
         "Telegram (snap)")
             if ! is_installed telegram-desktop "Telegram"; then
                 echo "Installing Telegram via snap..."
+                ensure_snap_available
                 sudo snap install telegram-desktop
                 check_error "Telegram"
             fi
